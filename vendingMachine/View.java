@@ -63,39 +63,39 @@ import java.awt.event.WindowEvent;
 
 public class View extends JFrame {
 
-  //Trivial constructor (could be automatically supplied by Java)
+	//Trivial constructor (could be automatically supplied by Java)
 	public View()
 	{}
-	
-	
-	
-  //Refer to the model (used in the update method, to call various
-  //  accessors methods in the model) 
+
+
+
+	//Refer to the model (used in the update method, to call various
+	//  accessors methods in the model)
 	public void addModel(Model m)
 	{model = m;}
-	
-	
-  //Refer to the controller (used to build the buttons the view will
-  //  place in the view) 
+
+
+	//Refer to the controller (used to build the buttons the view will
+	//  place in the view)
 	public void addController(Controller c)
 	{controller = c;}
-	
-	
-	
-  //build does the heavy lifting; it builds the view, populating it
-  //  with the appropriate sdisplays and buttons
-  //GUI applications have lots of little details to specify to make
-  //  them look nice, and this method is in charge of them all
+
+
+
+	//build does the heavy lifting; it builds the view, populating it
+	//  with the appropriate sdisplays and buttons
+	//GUI applications have lots of little details to specify to make
+	//  them look nice, and this method is in charge of them all
 	public void build()
 	{
-	  //When a window close icon is pressed, exit the entire program
+		//When a window close icon is pressed, exit the entire program
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e)
 			{
 				System.exit(0);
 			}
 		});
-		
+
 		//Size the frame to a reasobnable size and label it
 		setSize(500, 250);
 		setTitle("Vending Machine Simulator");
@@ -110,9 +110,9 @@ public class View extends JFrame {
 		Container contentPane = getContentPane();
 		contentPane.add(createTopPanel(),    "North");
 		contentPane.add(createCenterPanel(), "Center");
-		
+
 		//Bottom panel: messages
- 		message = new JTextField("", 60);
+		message = new JTextField("", 60);
 		message.setEditable(false);
 		message.setBackground(Color.cyan);
 		message.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -123,44 +123,44 @@ public class View extends JFrame {
 
 
 
-  //Called only in createCoinPanel/crateBuyPanel below, to set the
-  //  attributes of the buttons (their label, font) and add them to
-  //  the GUI
-  private void buttonSetup(JPanel  panelForButtons,
-                           JButton b,
-                           String  bLabel)
-  {
+	//Called only in createCoinPanel/crateBuyPanel below, to set the
+	//  attributes of the buttons (their label, font) and add them to
+	//  the GUI
+	private void buttonSetup(JPanel  panelForButtons,
+							 JButton b,
+							 String  bLabel)
+	{
 		b.setText(bLabel);
 		b.setFont(buttonFont);
 		panelForButtons.add(b);
-  }
-  
-  
-  
-  //Creates the panel for the Cancel buttons and Deposited text
-  //It both creates a button (from the controller) and places it in 
-  //  the view
+	}
+
+
+
+	//Creates the panel for the Cancel buttons and Deposited text
+	//It both creates a button (from the controller) and places it in
+	//  the view
 	private JPanel createTopPanel()
 	{
 		JPanel top = new JPanel();
 		JButton cancel = controller.getCancelButton();
 		buttonSetup(top,cancel,"Cancel");
-		
+
 		deposited = new JTextField("0", 10);
 		deposited.setEditable(false);
 		deposited.setBackground(Color.cyan);
 		deposited.setFont(buttonFont);
 		deposited.setHorizontalAlignment(JTextField.RIGHT);
 		top.add(deposited);
-		
+
 		return top;
-  }
-		
-		
-		
-  //Creates the panel for the coin-deposit buttons
-  //It both creates the buttons (from the controller) and places them in 
-  //  the view (a vertical grid)
+	}
+
+
+
+	//Creates the panel for the coin-deposit buttons
+	//It both creates the buttons (from the controller) and places them in
+	//  the view (a vertical grid)
 	private JPanel createCoinPanel()
 	{
 		JPanel coins = new JPanel();
@@ -174,16 +174,16 @@ public class View extends JFrame {
 
 
 	//Creates the panel for the buy buttons
-  //It both creates the buttons (from the controller) and places them in 
-  //  the view (a vertical grid)
-  private JPanel createBuyPanel()
-  {
-  	JPanel buy = new JPanel();
+	//It both creates the buttons (from the controller) and places them in
+	//  the view (a vertical grid)
+	private JPanel createBuyPanel()
+	{
+		JPanel buy = new JPanel();
 		buy.setLayout(new GridLayout(2,1));
 		buttonSetup(buy, buyPepsi=controller.getBuyButton("Pepsi"), "");
 		buttonSetup(buy, buyCoke= controller.getBuyButton("Coke"),  "");
 		return buy;
-  }
+	}
 
 
 
@@ -196,36 +196,36 @@ public class View extends JFrame {
 		center.add(createCoinPanel());
 		return center;
 	}
-	
-  //When the model changes, it call update, which determines how to
-  //  view the model by calling its various accessor methods.
-  //This seems a bit circular, but it isn't (you need to know
-  //   more about the MVC pattern to understand better)
+
+	//When the model changes, it call update, which determines how to
+	//  view the model by calling its various accessor methods.
+	//This seems a bit circular, but it isn't (you need to know
+	//   more about the MVC pattern to understand better)
 	void update()
 	{
 		System.out.println(model);  //Debugging
-		
+
 		deposited.setText(model.getDeposited());
 		message.setText (model.getMessage());
 		buyPepsi.setText("Buy Pepsi ("+model.getPepsiLeft()+")@"+model.getPepsiPrice());
 		buyCoke.setText("Buy Coke ("+model.getCokeLeft()+")@"+model.getCokePrice());
 		if (model.getPepsiLeft() == 0)
-		  buyPepsi.setEnabled(false);
+			buyPepsi.setEnabled(false);
 		if (model.getCokeLeft() == 0)
-		  buyCoke.setEnabled(false);
-		  
+			buyCoke.setEnabled(false);
+
 	}
 
 
 
 
-  //Instance Variables
-  
-  private Controller controller;  //Controller creates button in View
+	//Instance Variables
+
+	private Controller controller;  //Controller creates button in View
 	private Model      model;       //Model tells update what to display
-	
-	
+
+
 	private JButton    buyPepsi, buyCoke;
 	private JTextField deposited, message;
 	private Font       buttonFont;  //set/used across methods
- }
+}
